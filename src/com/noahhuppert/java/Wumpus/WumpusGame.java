@@ -102,7 +102,17 @@ public class WumpusGame {
                 }
 
                 if(gameActive){
-                    targetRoom.setElement(new ArrowElement());
+                    ArrowElement element = null;
+
+                    if(!(targetRoom.getElement() instanceof ArrowElement)){
+                        element = new ArrowElement();
+                    } else{
+                        element = (ArrowElement) targetRoom.getElement();
+                    }
+
+                    element.ammountArrows += 1;
+
+                    targetRoom.setElement(element);
                 }
             }
         } catch(StringIndexOutOfBoundsException e){
@@ -200,13 +210,13 @@ public class WumpusGame {
             } else if(userInput.equals("detect")){
                 String wumpusDirection = "none";
 
-                if(currentRoom().roomInDirection(WumpusMap.NORTH) != null && currentRoom().roomInDirection(WumpusMap.NORTH) instanceof WumpusRoom){
+                if(currentRoom().roomInDirection(WumpusMap.NORTH) != null && currentRoom().roomInDirection(WumpusMap.NORTH).getElement() instanceof WumpusElement){
                     wumpusDirection = "north";
-                } else if(currentRoom().roomInDirection(WumpusMap.EAST) != null && currentRoom().roomInDirection(WumpusMap.EAST) instanceof WumpusRoom){
+                } else if(currentRoom().roomInDirection(WumpusMap.EAST) != null && currentRoom().roomInDirection(WumpusMap.EAST).getElement() instanceof WumpusElement){
                     wumpusDirection = "east";
-                } else if(currentRoom().roomInDirection(WumpusMap.SOUTH) != null && currentRoom().roomInDirection(WumpusMap.SOUTH) instanceof WumpusRoom){
+                } else if(currentRoom().roomInDirection(WumpusMap.SOUTH) != null && currentRoom().roomInDirection(WumpusMap.SOUTH).getElement() instanceof WumpusElement){
                     wumpusDirection = "south";
-                } else if(currentRoom().roomInDirection(WumpusMap.WEST) != null && currentRoom().roomInDirection(WumpusMap.WEST) instanceof WumpusRoom){
+                } else if(currentRoom().roomInDirection(WumpusMap.WEST) != null && currentRoom().roomInDirection(WumpusMap.WEST).getElement() instanceof WumpusElement){
                     wumpusDirection = "west";
                 }
 
