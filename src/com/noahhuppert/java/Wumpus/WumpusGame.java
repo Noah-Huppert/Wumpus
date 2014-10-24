@@ -1,5 +1,35 @@
 package com.noahhuppert.java.Wumpus;/* class com.noahhuppert.java.Wumpus.WumpusGame -- main game class; provides main loop and some utilities.  */
 
+/*
+Features I added
+    Bats
+    Ammo for arrows
+    Pick-up-able arrows
+        When you shoot, if you miss. You can go to that room and pick up the arrow
+    Added health points
+    Added start health
+    Added start arrows
+    Made sure the user enters correct input
+        So if they type "shoot" it will prompt them to enter a direction
+    Gems
+        Used to upgrade stats
+    Pits
+    Apples
+        + 1 health
+    Wumpus Detector
+        If you smell the wumpus you can use the wumpus detector(if you have one) to find out which room
+    Gave the Wumpus HP
+    Rouge Like system
+        The player has 2 stats
+            Starting Arrows
+                The amount of arrows you start with
+            Starting Health
+                The ammount of health you start with
+        After the player dies they can choose to upgrade those stats
+        They do this by using gems that they pick up
+        Every time the user upgrades a stat that stat will cost one more to upgrade next time
+ */
+
 import com.noahhuppert.java.Wumpus.elements.*;
 
 import java.io.*;
