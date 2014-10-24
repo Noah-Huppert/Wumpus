@@ -10,6 +10,8 @@ public class GemElement extends RoomElement{
         WumpusGame.playerGems += 1;
 
         System.out.println("You find a gem, you now have " + WumpusGame.playerGems + " gems");
+
+        WumpusGame.map.getRoom(WumpusGame.currentRoomIndex).myElement = null;
     }
 
     public void printSenses() {

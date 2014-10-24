@@ -6,7 +6,7 @@ import java.io.*;
 
 public class WumpusGame {
 
-	public static WumpusMap map = new WumpusMap();
+	public static WumpusMap map;
 	public static boolean gameActive = true;
 	
 	public static int currentRoomIndex = 1;
@@ -20,6 +20,7 @@ public class WumpusGame {
 
     public static int playerAmmo = PLAYER_AMMO_DEFAULT;
     public static int playerHealth = PLAYER_HEALTH_DEFAULT;
+    public static boolean hasWumpusDetector = false;
     public static int playerGems = 0;
 
 	
@@ -87,7 +88,7 @@ public class WumpusGame {
         String input = readLine("Would you like to upgrade your powers?(y/n)");
 
         while(!input.equals("n")){
-            System.out.println("You have " + playerGems + " gems\nChoose one of the following things to upgrade(Or none!)");
+            System.out.println("You have " + playerGems + " gems\nChoose one of the following things to upgrade(Or \"n\" to exit)");
 
             int startingHealthCost = PLAYER_HEALTH_DEFAULT == PLAYER_HEALTH_STARTING ? 1 : PLAYER_HEALTH_STARTING - PLAYER_HEALTH_DEFAULT;
             int startingAmmoCost = PLAYER_AMMO_DEFAULT == PLAYER_AMMO_STARTING ? 1 : PLAYER_AMMO_STARTING - PLAYER_AMMO_DEFAULT;
@@ -121,9 +122,12 @@ public class WumpusGame {
         }
     }
 
-	public static void main(String[] args) {
+    public static void addBasicElements(){
+
+        map = new WumpusMap();
+
         /* Add elements */
-		map.addElement(new WumpusElement());
+        map.addElement(new WumpusElement());
 
         map.addElement(new PitElement());
         map.addElement(new PitElement());
@@ -136,12 +140,19 @@ public class WumpusGame {
         map.addElement(new GemElement());
         map.addElement(new GemElement());
         map.addElement(new GemElement());
-		
-		currentRoomIndex = map.randomEmptyRoom();
+
+        map.addElement(new WumpusDetector());
+
+        currentRoomIndex = map.randomEmptyRoom();
+    }
+
+	public static void main(String[] args) {
+
+        addBasicElements();
 		
 		do {
             map.getRoom(currentRoomIndex).printInfo();
-            String userInput = readLine("> ");
+            String userInput = readLine("Type your command(Type \"help\" for help)\n> ");
             int direction = 0;
             if (userInput.startsWith("shoot")) {
                 shootArrow(userInput);
@@ -156,6 +167,43 @@ public class WumpusGame {
                 }
             } else if (userInput.equals("bye")) {
                 gameActive = false;
+            } else if(userInput.equals("detect")){
+                String wumpusDirection = "none";
+
+                if(currentRoom().roomInDirection(WumpusMap.NORTH) != null && currentRoom().roomInDirection(WumpusMap.NORTH) instanceof WumpusRoom){
+                    wumpusDirection = "north";
+                } else if(currentRoom().roomInDirection(WumpusMap.EAST) != null && currentRoom().roomInDirection(WumpusMap.EAST) instanceof WumpusRoom){
+                    wumpusDirection = "east";
+                } else if(currentRoom().roomInDirection(WumpusMap.SOUTH) != null && currentRoom().roomInDirection(WumpusMap.SOUTH) instanceof WumpusRoom){
+                    wumpusDirection = "south";
+                } else if(currentRoom().roomInDirection(WumpusMap.WEST) != null && currentRoom().roomInDirection(WumpusMap.WEST) instanceof WumpusRoom){
+                    wumpusDirection = "west";
+                }
+
+                System.out.println("The wumpus is in the room to your " + wumpusDirection);
+                hasWumpusDetector = false;
+
+                System.out.println("You have consumed your wumpus detector");
+
+                map.addElement(new WumpusDetector());
+            } else if(userInput.equals("help")){
+                System.out.println("    Directions");
+
+                System.out.println("        North");
+                System.out.println("        East");
+                System.out.println("        South");
+                System.out.println("        West");
+                System.out.println("        n");
+                System.out.println("        e");
+                System.out.println("        s");
+                System.out.println("        w");
+
+                System.out.println("shoot [direction]           Shoots an array into the room in that direction");
+                System.out.println("detect                      Use your Wumpus Detector");
+
+                System.out.println("\nRouge like system");
+                System.out.println("    With each death you will loose all you items, but keep your characters stats");
+                System.out.println("    You can upgrade each stat with Gems which you will find in the level\n");
             } else if (userInput.equals("DEBUG DIE")) {
                 playerHealth = 0;
             } else if(userInput.equals("DEBUG ADD HEALTH")){
@@ -178,8 +226,13 @@ public class WumpusGame {
                 } else{
                     playerAmmo = PLAYER_AMMO_STARTING;
                     playerHealth = PLAYER_AMMO_STARTING;
+                    hasWumpusDetector = false;
+
+                    addBasicElements();
 
                     upgradePowers();
+
+                    System.out.println("********** New round **********");
                 }
             }
 		} while (gameActive);

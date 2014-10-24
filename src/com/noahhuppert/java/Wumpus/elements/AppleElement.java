@@ -10,6 +10,8 @@ public class AppleElement extends RoomElement{
         WumpusGame.playerHealth += 1;
 
         System.out.println("You find an apple, you now have " + WumpusGame.playerHealth + " health");
+
+        WumpusGame.map.getRoom(WumpusGame.currentRoomIndex).myElement = null;
     }
 
     public void printSenses() {

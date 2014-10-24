@@ -10,7 +10,7 @@ public class WumpusRoom {
 		private int myIndex;		//  the rooms are numbered 1-20; the index refers to that number
 		private int[] neighbors;	// index values for neighboring rooms in order: N, E, S, W
 		
-		private RoomElement myElement;
+		public RoomElement myElement;
 		
 		WumpusRoom(int ndx, int n, int e, int s, int w) {
 			myIndex = ndx;

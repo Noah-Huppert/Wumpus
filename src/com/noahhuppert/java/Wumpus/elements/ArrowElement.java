@@ -10,6 +10,8 @@ public class ArrowElement extends RoomElement{
         WumpusGame.playerAmmo += 1;
 
         System.out.println("You pick up an arrow, you now have " + WumpusGame.playerAmmo + " arrow(s) left");
+
+        WumpusGame.map.getRoom(WumpusGame.currentRoomIndex).myElement = null;
     }
 
     public void printSenses() {
